@@ -32,7 +32,20 @@ export async function GET(
       return NextResponse.json({ error: "Failed to fetch profile" }, { status: 500 })
     }
 
-    return NextResponse.json({ profile })
+    // Get user's resume/tweets (public data)
+    const { data: resume, error: resumeError } = await supabase
+      .from('resumes')
+      .select('tweets, created_at')
+      .eq('user_profile_id', profile.id)
+      .single()
+
+    return NextResponse.json({ 
+      profile: {
+        ...profile,
+        tweets: resume?.tweets || [],
+        resume_created_at: resume?.created_at
+      }
+    })
 
   } catch (error) {
     console.error('Error in profile API:', error)

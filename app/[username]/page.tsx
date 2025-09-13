@@ -2,11 +2,30 @@
 
 import { useState, useEffect, use } from 'react'
 import { notFound } from 'next/navigation'
+import { Tweet } from 'react-tweet'
+
+interface TweetItem {
+  tweet_link: string
+  notes?: string
+}
 
 interface UserProfile {
   id: string
   username: string
   created_at: string
+  tweets: TweetItem[]
+  resume_created_at?: string
+}
+
+// Helper function to extract tweet ID from URL
+function extractTweetId(url: string): string | null {
+  try {
+    const regex = /(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/
+    const match = url.match(regex)
+    return match ? match[1] : null
+  } catch {
+    return null
+  }
 }
 
 interface ProfilePageProps {
@@ -102,34 +121,94 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
 
-        {/* Profile Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Main Content Area */}
-          <div className="md:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">About</h2>
-              <div className="text-gray-600">
-                <p className="mb-4">
-                  Welcome to {profile.username}&apos;s profile! This is a view-only profile page.
+        {/* Tweets Section */}
+        <div className="space-y-8">
+          {profile.tweets && profile.tweets.length > 0 ? (
+            <>
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                  {profile.username}&apos;s Tweet Collection
+                </h2>
+                <p className="text-gray-600">
+                  {profile.tweets.length} tweet{profile.tweets.length !== 1 ? 's' : ''} saved
                 </p>
-                <p>
-                  This user joined on {new Date(profile.created_at).toLocaleDateString()}.
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {profile.tweets.map((tweetItem, index) => {
+                  const tweetId = extractTweetId(tweetItem.tweet_link)
+                  
+                  if (!tweetId) {
+                    return (
+                      <div key={index} className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <p className="text-red-600 text-sm">
+                          Invalid tweet URL: {tweetItem.tweet_link}
+                        </p>
+                        {tweetItem.notes && (
+                          <p className="text-gray-600 text-sm mt-2">
+                            <strong>Note:</strong> {tweetItem.notes}
+                          </p>
+                        )}
+                      </div>
+                    )
+                  }
+                  
+                  return (
+                    <div key={index} className="space-y-3">
+                      {/* User's note (if exists) */}
+                      {tweetItem.notes && (
+                        <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                          <p className="text-blue-800 text-sm">
+                            <span className="font-medium">{profile.username}&apos;s note:</span> {tweetItem.notes}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {/* Tweet embed */}
+                      <div className="flex justify-center">
+                        <Tweet id={tweetId} />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-12">
+              <div className="bg-gray-50 rounded-lg p-8">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                  No tweets yet
+                </h2>
+                <p className="text-gray-600">
+                  {profile.username} hasn&apos;t shared any tweets yet.
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Profile Info</h3>
-              <div className="space-y-3">
-                <div>
-                  <span className="text-sm text-gray-500">Username</span>
-                  <p className="font-medium text-gray-800">{profile.username}</p>
-                </div>
-              </div>
+          )}
+        </div>
+        
+        {/* Profile Info Sidebar */}
+        <div className="mt-12 bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Profile Info</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <span className="text-gray-500">Username</span>
+              <p className="font-medium text-gray-800">{profile.username}</p>
             </div>
+            <div>
+              <span className="text-gray-500">Member since</span>
+              <p className="font-medium text-gray-800">
+                {new Date(profile.created_at).toLocaleDateString()}
+              </p>
+            </div>
+            {profile.resume_created_at && (
+              <div>
+                <span className="text-gray-500">First tweet saved</span>
+                <p className="font-medium text-gray-800">
+                  {new Date(profile.resume_created_at).toLocaleDateString()}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
