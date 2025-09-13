@@ -134,7 +134,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="space-y-6">
                 {profile.tweets.map((tweetItem, index) => {
                   const tweetId = extractTweetId(tweetItem.tweet_link)
                   
@@ -203,7 +203,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
             {profile.resume_created_at && (
               <div>
-                <span className="text-gray-500">First tweet saved</span>
+                <span className="text-gray-500">Resume last updated</span>
                 <p className="font-medium text-gray-800">
                   {new Date(profile.resume_created_at).toLocaleDateString()}
                 </p>
