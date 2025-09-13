@@ -3,6 +3,7 @@
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
 import UsernameForm from '@/components/UsernameForm'
+import ResumeForm from '@/components/ResumeForm'
 
 interface UserProfile {
   id: string
@@ -17,6 +18,7 @@ export default function Home() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [showUpdateForm, setShowUpdateForm] = useState(false)
+  const [showResumeForm, setShowResumeForm] = useState(false)
 
   // Fetch user profile when component mounts
   useEffect(() => {
@@ -99,12 +101,18 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="mt-4 flex gap-2">
+              <div className="mt-4 flex gap-2 flex-wrap">
                 <button
                   onClick={() => setShowUpdateForm(!showUpdateForm)}
                   className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors"
                 >
                   {showUpdateForm ? 'Cancel' : 'Change Username'}
+                </button>
+                <button
+                  onClick={() => setShowResumeForm(!showResumeForm)}
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                >
+                  {showResumeForm ? 'Cancel' : 'Manage Resume'}
                 </button>
                 <a
                   href={`/${userProfile.username}`}
@@ -123,6 +131,17 @@ export default function Home() {
                   mode="update"
                   currentUsername={userProfile.username}
                   onUsernameSet={handleUsernameSet}
+                />
+              </div>
+            )}
+
+            {showResumeForm && (
+              <div className="mt-8">
+                <ResumeForm
+                  onResumeUpdated={() => {
+                    // Optionally refresh or show success message
+                    console.log('Resume updated!')
+                  }}
                 />
               </div>
             )}

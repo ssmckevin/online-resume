@@ -14,11 +14,24 @@ export function createClerkSupabaseClient() {
 }
 
 // Types for our database
+export interface Tweet {
+  tweet_link: string
+  notes?: string
+}
+
 export interface UserProfile {
   id: string
   clerk_user_id: string
   username: string
   email?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Resume {
+  id: string
+  user_profile_id: string
+  tweets: Tweet[]
   created_at: string
   updated_at: string
 }
