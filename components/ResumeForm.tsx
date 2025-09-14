@@ -14,6 +14,8 @@ export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
   const [fetchingResume, setFetchingResume] = useState(true)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
   // Fetch existing resume on component mount
   useEffect(() => {
@@ -55,6 +57,49 @@ export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
       i === index ? { ...tweet, [field]: value } : tweet
     )
     setTweets(updatedTweets)
+  }
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setDragOverIndex(index)
+  }
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null)
+  }
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault()
+    
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null)
+      setDragOverIndex(null)
+      return
+    }
+
+    const newTweets = [...tweets]
+    const draggedTweet = newTweets[draggedIndex]
+    
+    // Remove the dragged tweet
+    newTweets.splice(draggedIndex, 1)
+    
+    // Insert at the new position
+    newTweets.splice(dropIndex, 0, draggedTweet)
+    
+    setTweets(newTweets)
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+  }
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null)
+    setDragOverIndex(null)
   }
 
   const validateTweets = () => {
@@ -187,14 +232,41 @@ export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {tweets.map((tweet, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div 
+            key={`tweet-${index}`}
+            draggable={!loading && tweets.length > 1}
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleDrop(e, index)}
+            onDragEnd={handleDragEnd}
+            className={`border rounded-lg p-4 transition-all duration-200 ${
+              draggedIndex === index 
+                ? 'opacity-50 scale-95 border-blue-300' 
+                : dragOverIndex === index 
+                ? 'border-blue-400 bg-blue-50 scale-102' 
+                : 'border-gray-200 hover:border-gray-300'
+            } ${
+              !loading && tweets.length > 1 ? 'cursor-move' : ''
+            }`}
+          >
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-lg font-medium text-gray-800">Tweet #{index + 1}</h3>
+              <div className="flex items-center gap-2">
+                {tweets.length > 1 && !loading && (
+                  <div className="text-gray-400 hover:text-gray-600">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                      <path d="M10 13a1 1 0 100-2 1 1 0 000 2zM10 8a1 1 0 100-2 1 1 0 000 2zM10 5a1 1 0 100-2 1 1 0 000 2zM6 13a1 1 0 100-2 1 1 0 000 2zM6 8a1 1 0 100-2 1 1 0 000 2zM6 5a1 1 0 100-2 1 1 0 000 2z"/>
+                    </svg>
+                  </div>
+                )}
+                <h3 className="text-lg font-medium text-gray-800">Tweet #{index + 1}</h3>
+              </div>
               {tweets.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeTweet(index)}
                   className="text-red-600 hover:text-red-800 text-sm"
+                  disabled={loading}
                 >
                   Remove
                 </button>
@@ -270,4 +342,5 @@ export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
     </div>
   )
 }
+
 
