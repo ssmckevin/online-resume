@@ -69,3 +69,9 @@ body {
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
 }
+
+/* Hide header on profile pages */
+.profile-page ~ * header,
+body:has(.profile-page) header {
+  display: none !important;
+}
