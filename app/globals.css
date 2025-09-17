@@ -24,3 +24,48 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Tweet Card Component */
+.tweet-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  position: relative;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+/* Alternating background colors */
+.tweet-card:nth-child(odd) {
+  background-color: #f8fafc; /* Very light blue-gray */
+}
+
+.tweet-card:nth-child(even) {
+  background-color: #ffffff; /* White */
+}
+
+.tweet-card .tweet-embed {
+  transform: scale(0.6);
+  transform-origin: center;
+  margin: -20px 0 -40px 0;
+}
+
+.tweet-card .tweet-note {
+  margin-top: -100px;
+  padding: 0.25rem 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+  max-width: 24rem;
+  text-align: center;
+}
+
+/* Remove default spacing from react-tweet */
+.tweet-card [data-tweet-id] > div:last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}

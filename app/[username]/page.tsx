@@ -150,16 +150,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         <div className="space-y-8">
           {profile.tweets && profile.tweets.length > 0 ? (
             <>
-              <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {profile.username}&apos;s Tweet Collection
-                </h2>
-                <p className="text-gray-600">
-                  {profile.tweets.length} tweet{profile.tweets.length !== 1 ? 's' : ''} saved
-                </p>
-              </div>
-              
-              <div className="space-y-6">
+              <div className="flex flex-col gap-4">
                 {profile.tweets.map((tweetItem, index) => {
                   const tweetId = extractTweetId(tweetItem.tweet_link)
                   
@@ -179,20 +170,18 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   }
                   
                   return (
-                    <div key={index} className="space-y-3">
-                      {/* User's note (if exists) */}
-                      {tweetItem.notes && (
-                        <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-                          <p className="text-blue-800 text-sm">
-                            <span className="font-medium">{profile.username}&apos;s note:</span> {tweetItem.notes}
-                          </p>
-                        </div>
-                      )}
-                      
+                    <div key={index} className="tweet-card">
                       {/* Tweet embed */}
-                      <div className="flex justify-center">
+                      <div className="tweet-embed">
                         <Tweet id={tweetId} />
                       </div>
+                      
+                      {/* User's note (if exists) */}
+                      {tweetItem.notes && (
+                        <div className="tweet-note">
+                          {tweetItem.notes}
+                        </div>
+                      )}
                     </div>
                   )
                 })}
