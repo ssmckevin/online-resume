@@ -121,6 +121,31 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
 
+        {/* Profile Info */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Profile Info</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <span className="text-gray-500">Username</span>
+              <p className="font-medium text-gray-800">{profile.username}</p>
+            </div>
+            <div>
+              <span className="text-gray-500">Member since</span>
+              <p className="font-medium text-gray-800">
+                {new Date(profile.created_at).toLocaleDateString()}
+              </p>
+            </div>
+            {profile.resume_created_at && (
+              <div>
+                <span className="text-gray-500">Resume last updated</span>
+                <p className="font-medium text-gray-800">
+                  {new Date(profile.resume_created_at).toLocaleDateString()}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Tweets Section */}
         <div className="space-y-8">
           {profile.tweets && profile.tweets.length > 0 ? (
@@ -185,31 +210,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
             </div>
           )}
-        </div>
-        
-        {/* Profile Info Sidebar */}
-        <div className="mt-12 bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Profile Info</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div>
-              <span className="text-gray-500">Username</span>
-              <p className="font-medium text-gray-800">{profile.username}</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Member since</span>
-              <p className="font-medium text-gray-800">
-                {new Date(profile.created_at).toLocaleDateString()}
-              </p>
-            </div>
-            {profile.resume_created_at && (
-              <div>
-                <span className="text-gray-500">Resume last updated</span>
-                <p className="font-medium text-gray-800">
-                  {new Date(profile.resume_created_at).toLocaleDateString()}
-                </p>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </main>
