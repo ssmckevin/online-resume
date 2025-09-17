@@ -68,19 +68,26 @@ export default function UsernameForm({ onUsernameSet, mode = 'create', currentUs
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+    <div className="max-w-md mx-auto card p-8">
+      <div className="text-center mb-8">
+        <h2 
+          className="text-3xl font-bold mb-3"
+          style={{ fontFamily: 'var(--font-handwritten)', color: 'var(--foreground)' }}
+        >
           {mode === 'update' ? 'Update Username' : `Welcome${user?.firstName ? `, ${user.firstName}` : ''}!`}
         </h2>
-        <p className="text-gray-600">
+        <p style={{ color: 'var(--foreground-secondary)' }}>
           {mode === 'update' ? 'Change your username below' : 'Choose a username to complete your profile'}
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+          <label 
+            htmlFor="username" 
+            className="block text-sm font-medium mb-3"
+            style={{ color: 'var(--foreground)' }}
+          >
             Username
           </label>
           <input
@@ -89,20 +96,48 @@ export default function UsernameForm({ onUsernameSet, mode = 'create', currentUs
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your username"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-3 rounded-xl transition-all duration-200"
+            style={{
+              border: '1.5px solid var(--border-gentle)',
+              background: 'var(--background-card)',
+              color: 'var(--foreground)',
+              fontSize: '1rem'
+            }}
             disabled={loading}
             maxLength={50}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'var(--accent-green)';
+              e.target.style.boxShadow = '0 0 0 3px rgba(157, 181, 161, 0.15)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'var(--border-gentle)';
+              e.target.style.boxShadow = 'none';
+            }}
           />
         </div>
 
         {error && (
-          <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
+          <div 
+            className="text-sm p-4 rounded-xl border"
+            style={{ 
+              color: '#c53030',
+              background: '#fed7d7',
+              borderColor: '#feb2b2'
+            }}
+          >
             {error}
           </div>
         )}
 
         {success && (
-          <div className="text-green-600 text-sm bg-green-50 p-3 rounded-md">
+          <div 
+            className="text-sm p-4 rounded-xl border"
+            style={{ 
+              color: 'var(--accent-green)',
+              background: '#f0fff4',
+              borderColor: 'var(--accent-sage)'
+            }}
+          >
             {success}
           </div>
         )}
@@ -110,7 +145,27 @@ export default function UsernameForm({ onUsernameSet, mode = 'create', currentUs
         <button
           type="submit"
           disabled={loading || !username.trim() || (mode === 'update' && username.trim() === currentUsername)}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 px-6 font-medium rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-white"
+          style={{
+            background: loading || !username.trim() || (mode === 'update' && username.trim() === currentUsername) 
+              ? 'var(--foreground-light)' 
+              : 'var(--accent-green)',
+            border: '1.5px solid transparent'
+          }}
+          onMouseEnter={(e) => {
+            if (!e.currentTarget.disabled) {
+              e.currentTarget.style.background = 'var(--accent-sage)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-soft)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!e.currentTarget.disabled) {
+              e.currentTarget.style.background = 'var(--accent-green)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }
+          }}
         >
           {loading 
             ? (mode === 'update' ? 'Updating...' : 'Saving...') 

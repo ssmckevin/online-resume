@@ -70,10 +70,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
   if (loading) {
     return (
-      <main className="min-h-screen p-8 flex flex-col items-center justify-center">
+      <main className="min-h-screen p-8 flex flex-col items-center justify-center" style={{ background: 'var(--background)' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading profile...</p>
+          <div 
+            className="animate-spin rounded-full h-10 w-10 border-2 mx-auto loading-spinner"
+            style={{ borderTopColor: 'var(--accent-green)', borderColor: 'var(--border-soft)' }}
+          ></div>
+          <p className="mt-4 text-lg" style={{ color: 'var(--foreground-secondary)' }}>Loading profile...</p>
         </div>
       </main>
     )
@@ -81,10 +84,15 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
   if (error) {
     return (
-      <main className="min-h-screen p-8 flex flex-col items-center justify-center">
+      <main className="min-h-screen p-8 flex flex-col items-center justify-center" style={{ background: 'var(--background)' }}>
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
-          <p className="text-gray-600">{error}</p>
+          <h1 
+            className="text-3xl font-bold mb-4"
+            style={{ fontFamily: 'var(--font-handwritten)', color: '#c53030' }}
+          >
+            Oops!
+          </h1>
+          <p style={{ color: 'var(--foreground-secondary)' }}>{error}</p>
         </div>
       </main>
     )
@@ -95,18 +103,21 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   }
 
   return (
-    <main className="min-h-screen p-8">
+    <main className="min-h-screen px-6 py-12" style={{ background: 'var(--background)' }}>
       <div className="max-w-4xl mx-auto">
         {/* Profile Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">
+        <div className="text-center mb-12">
+          <h1 
+            className="text-5xl font-bold mb-4"
+            style={{ fontFamily: 'var(--font-handwritten)', color: 'var(--foreground)' }}
+          >
             {profile.username}
           </h1>
+          <div className="w-24 h-0.5 mx-auto" style={{ background: 'var(--accent-sage)' }}></div>
         </div>
 
-
         {/* Tweets Section */}
-        <div className="space-y-8">
+        <div className="space-y-6">
           {profile.tweets && profile.tweets.length > 0 ? (
             <>
               <div className="flex flex-col gap-4">
@@ -115,12 +126,20 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   
                   if (!tweetId) {
                     return (
-                      <div key={index} className="bg-red-50 border border-red-200 rounded-lg p-4">
-                        <p className="text-red-600 text-sm">
+                      <div 
+                        key={index} 
+                        className="border rounded-2xl p-6"
+                        style={{
+                          background: '#fed7d7',
+                          borderColor: '#feb2b2',
+                          color: '#c53030'
+                        }}
+                      >
+                        <p className="text-sm font-medium">
                           Invalid tweet URL: {tweetItem.tweet_link}
                         </p>
                         {tweetItem.notes && (
-                          <p className="text-gray-600 text-sm mt-2">
+                          <p className="text-sm mt-3" style={{ color: 'var(--foreground-secondary)' }}>
                             <strong>Note:</strong> {tweetItem.notes}
                           </p>
                         )}
@@ -147,14 +166,21 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
             </>
           ) : (
-            <div className="text-center py-12">
-              <div className="bg-gray-50 rounded-lg p-8">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            <div className="text-center py-16">
+              <div 
+                className="card p-12 max-w-lg mx-auto"
+                style={{ background: 'var(--background-secondary)' }}
+              >
+                <h2 
+                  className="text-3xl font-semibold mb-3"
+                  style={{ fontFamily: 'var(--font-handwritten)', color: 'var(--foreground)' }}
+                >
                   No tweets yet
                 </h2>
-                <p className="text-gray-600">
-                  {profile.username} hasn&apos;t shared any tweets yet.
+                <p style={{ color: 'var(--foreground-secondary)', fontSize: '1.1rem' }}>
+                  {profile.username} hasn&apos;t shared any thoughts yet.
                 </p>
+                <div className="mt-6 w-16 h-0.5 mx-auto" style={{ background: 'var(--accent-sage)' }}></div>
               </div>
             </div>
           )}

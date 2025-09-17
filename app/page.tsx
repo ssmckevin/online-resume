@@ -58,59 +58,132 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen p-8 flex flex-col items-center justify-center">
+    <main className="min-h-screen px-6 py-12 flex flex-col items-center justify-center" style={{ background: 'var(--background)' }}>
       <SignedOut>
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-6">Welcome!</h1>
-          <p className="text-gray-600 mb-8">Sign in to get started</p>
-          <SignInButton>
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-              Sign In
-            </button>
-          </SignInButton>
+        <div className="text-center max-w-md mx-auto">
+          <div className="mb-8">
+            <h1 className="text-5xl font-bold mb-4" style={{ color: 'var(--foreground)', fontFamily: 'var(--font-handwritten)' }}>
+              Welcome!
+            </h1>
+            <p className="text-lg" style={{ color: 'var(--foreground-secondary)' }}>
+              Create your personal resume space
+            </p>
+          </div>
+          
+          <div className="space-y-4">
+            <SignInButton>
+              <button 
+                className="w-full px-8 py-3 text-white font-medium rounded-xl transition-all duration-200"
+                style={{ 
+                  background: 'var(--accent-green)',
+                  border: '1.5px solid var(--accent-green)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--accent-sage)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-soft)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--accent-green)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                Sign In to Start
+              </button>
+            </SignInButton>
+          </div>
         </div>
       </SignedOut>
 
       <SignedIn>
         {loading ? (
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading...</p>
+            <div 
+              className="animate-spin rounded-full h-10 w-10 border-2 mx-auto loading-spinner"
+              style={{ borderTopColor: 'var(--accent-green)', borderColor: 'var(--border-soft)' }}
+            ></div>
+            <p className="mt-4 text-lg" style={{ color: 'var(--foreground-secondary)' }}>
+              Loading your space...
+            </p>
           </div>
         ) : userProfile ? (
           // User has a profile - show dashboard
-          <div className="text-center max-w-2xl">
-            <h1 className="text-4xl font-bold mb-4">
-              Welcome back, {userProfile.username}!
-            </h1>
+          <div className="text-center max-w-3xl mx-auto w-full">
+            <div className="mb-10">
+              <h1 className="text-5xl font-bold mb-3" style={{ fontFamily: 'var(--font-handwritten)', color: 'var(--foreground)' }}>
+                Welcome back, {userProfile.username}!
+              </h1>
+              <p className="text-lg" style={{ color: 'var(--foreground-secondary)' }}>
+                Your creative space is ready
+              </p>
+            </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4">Your Profile</h2>
-              <div className="text-left space-y-2">
-                <p><strong>Username:</strong> {userProfile.username}</p>
-                <p><strong>Member since:</strong> {new Date(userProfile.created_at).toLocaleDateString()}</p>
-                <p><strong>Profile URL:</strong> 
+            <div className="card p-8 mb-8">
+              <h2 className="text-2xl font-semibold mb-6" style={{ fontFamily: 'var(--font-handwritten)', color: 'var(--foreground)' }}>
+                Your Profile
+              </h2>
+              <div className="text-left space-y-4 mb-8">
+                <div className="flex items-center space-x-3">
+                  <span className="font-medium" style={{ color: 'var(--foreground)' }}>Username:</span>
+                  <span style={{ color: 'var(--foreground-secondary)' }}>{userProfile.username}</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="font-medium" style={{ color: 'var(--foreground)' }}>Member since:</span>
+                  <span style={{ color: 'var(--foreground-secondary)' }}>
+                    {new Date(userProfile.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3 flex-wrap">
+                  <span className="font-medium" style={{ color: 'var(--foreground)' }}>Profile URL:</span>
                   <a 
                     href={`/${userProfile.username}`}
-                    className="ml-2 text-blue-600 hover:text-blue-800 underline"
+                    className="underline decoration-2 underline-offset-4 transition-colors"
+                    style={{ color: 'var(--accent-brown)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-green)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--accent-brown)'}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     /{userProfile.username}
                   </a>
-                </p>
+                </div>
               </div>
               
-              <div className="mt-4 flex gap-2 flex-wrap">
+              <div className="flex gap-3 flex-wrap justify-center">
                 <button
                   onClick={() => setShowUpdateForm(!showUpdateForm)}
-                  className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors"
+                  className="px-6 py-2.5 text-white font-medium rounded-xl transition-all duration-200"
+                  style={{ 
+                    background: 'var(--accent-brown)',
+                    border: '1.5px solid var(--accent-brown)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--accent-warm)';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'var(--accent-brown)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
                 >
                   {showUpdateForm ? 'Cancel' : 'Change Username'}
                 </button>
                 <button
                   onClick={() => setShowResumeForm(!showResumeForm)}
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                  className="px-6 py-2.5 text-white font-medium rounded-xl transition-all duration-200"
+                  style={{ 
+                    background: 'var(--accent-green)',
+                    border: '1.5px solid var(--accent-green)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--accent-sage)';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'var(--accent-green)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
                 >
                   {showResumeForm ? 'Cancel' : 'Manage Resume'}
                 </button>
@@ -118,7 +191,19 @@ export default function Home() {
                   href={`/${userProfile.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+                  className="px-6 py-2.5 text-white font-medium rounded-xl transition-all duration-200 no-underline"
+                  style={{ 
+                    background: 'var(--accent-sage)',
+                    border: '1.5px solid var(--accent-sage)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--accent-green)';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'var(--accent-sage)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
                 >
                   View Public Profile
                 </a>
@@ -126,7 +211,7 @@ export default function Home() {
             </div>
 
             {showUpdateForm && (
-              <div className="mt-8">
+              <div className="mb-8">
                 <UsernameForm
                   mode="update"
                   currentUsername={userProfile.username}
@@ -136,7 +221,7 @@ export default function Home() {
             )}
 
             {showResumeForm && (
-              <div className="mt-8">
+              <div className="mb-8">
                 <ResumeForm
                   onResumeUpdated={() => {
                     // Optionally refresh or show success message
@@ -148,7 +233,7 @@ export default function Home() {
           </div>
         ) : (
           // User doesn't have a profile - show username creation form
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md mx-auto">
             <UsernameForm onUsernameSet={handleUsernameSet} />
           </div>
         )}

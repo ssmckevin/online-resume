@@ -35,18 +35,60 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          style={{ background: 'var(--background)', color: 'var(--foreground)' }}
         >
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
+          <header className="flex justify-end items-center px-6 py-4 gap-4 h-20">
             <SignedOut>
-              <SignInButton />
-              <SignUpButton>
-                <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
-                </button>
-              </SignUpButton>
+              <div className="flex items-center gap-3">
+                <SignInButton>
+                  <button 
+                    className="px-4 py-2 font-medium rounded-lg transition-all duration-200"
+                    style={{ 
+                      color: 'var(--foreground)',
+                      background: 'transparent',
+                      border: '1.5px solid var(--border-gentle)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--hover-bg)';
+                      e.currentTarget.style.borderColor = 'var(--accent-sage)';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.borderColor = 'var(--border-gentle)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton>
+                  <button 
+                    className="px-5 py-2 font-medium rounded-lg transition-all duration-200 text-white"
+                    style={{ 
+                      background: 'var(--accent-green)',
+                      border: '1.5px solid var(--accent-green)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--accent-sage)';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = 'var(--shadow-gentle)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'var(--accent-green)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </div>
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <div style={{ filter: 'sepia(20%) saturate(70%) hue-rotate(15deg)' }}>
+                <UserButton />
+              </div>
             </SignedIn>
           </header>
           {children}
