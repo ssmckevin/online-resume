@@ -98,53 +98,12 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     <main className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <div className="text-center">
-            {/* Avatar placeholder */}
-            <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center">
-              <span className="text-white text-4xl font-bold">
-                {profile.username.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">
-              {profile.username}
-            </h1>
-            
-            <p className="text-gray-600 mb-4">
-              Member since {new Date(profile.created_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </p>
-          </div>
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800">
+            {profile.username}
+          </h1>
         </div>
 
-        {/* Profile Info */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Profile Info</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div>
-              <span className="text-gray-500">Username</span>
-              <p className="font-medium text-gray-800">{profile.username}</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Member since</span>
-              <p className="font-medium text-gray-800">
-                {new Date(profile.created_at).toLocaleDateString()}
-              </p>
-            </div>
-            {profile.resume_created_at && (
-              <div>
-                <span className="text-gray-500">Resume last updated</span>
-                <p className="font-medium text-gray-800">
-                  {new Date(profile.resume_created_at).toLocaleDateString()}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
 
         {/* Tweets Section */}
         <div className="space-y-8">
