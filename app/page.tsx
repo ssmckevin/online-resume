@@ -152,7 +152,10 @@ export default function Home() {
               
               <div className="flex gap-3 flex-wrap justify-center">
                 <button
-                  onClick={() => setShowUpdateForm(!showUpdateForm)}
+                  onClick={() => {
+                    setShowUpdateForm(!showUpdateForm);
+                    if (!showUpdateForm) setShowResumeForm(false); // Close resume form when opening username form
+                  }}
                   className="px-6 py-2.5 text-white font-medium rounded-xl transition-all duration-200"
                   style={{ 
                     background: 'var(--accent-brown)',
@@ -170,7 +173,10 @@ export default function Home() {
                   {showUpdateForm ? 'Cancel' : 'Change Username'}
                 </button>
                 <button
-                  onClick={() => setShowResumeForm(!showResumeForm)}
+                  onClick={() => {
+                    setShowResumeForm(!showResumeForm);
+                    if (!showResumeForm) setShowUpdateForm(false); // Close username form when opening resume form
+                  }}
                   className="px-6 py-2.5 text-white font-medium rounded-xl transition-all duration-200"
                   style={{ 
                     background: 'var(--accent-green)',
