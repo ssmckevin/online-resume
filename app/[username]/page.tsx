@@ -2,8 +2,7 @@
 
 import { useState, useEffect, use } from 'react'
 import { notFound } from 'next/navigation'
-import { Tweet } from 'react-tweet'
-import { extractTweetId } from '@/app/lib/utils'
+import TweetCard from '@/components/TweetCard'
 
 interface TweetItem {
   tweet_link: string
@@ -111,48 +110,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           {profile.tweets && profile.tweets.length > 0 ? (
             <>
               <div className="flex flex-col gap-4">
-                {profile.tweets.map((tweetItem, index) => {
-                  const tweetId = extractTweetId(tweetItem.tweet_link)
-                  
-                  if (!tweetId) {
-                    return (
-                      <div 
-                        key={index} 
-                        className="border rounded-2xl p-6"
-                        style={{
-                          background: '#fed7d7',
-                          borderColor: '#feb2b2',
-                          color: '#c53030'
-                        }}
-                      >
-                        <p className="text-sm font-medium">
-                          Invalid tweet URL: {tweetItem.tweet_link}
-                        </p>
-                        {tweetItem.notes && (
-                          <p className="text-sm mt-3" style={{ color: 'var(--foreground-secondary)' }}>
-                            <strong>Note:</strong> {tweetItem.notes}
-                          </p>
-                        )}
-                      </div>
-                    )
-                  }
-                  
-                  return (
-                    <div key={index} className="tweet-card">
-                      {/* Tweet embed */}
-                      <div className="tweet-embed">
-                        <Tweet id={tweetId} />
-                      </div>
-                      
-                      {/* User's note (if exists) */}
-                      {tweetItem.notes && (
-                        <div className="tweet-note">
-                          {tweetItem.notes}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
+                {profile.tweets.map((tweetItem, index) => (
+                  <TweetCard
+                    key={index}
+                    tweetItem={tweetItem}
+                    index={index}
+                  />
+                ))}
               </div>
             </>
           ) : (
