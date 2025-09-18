@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import { notFound } from 'next/navigation'
 import { Tweet } from 'react-tweet'
+import { extractTweetId } from '@/app/lib/utils'
 
 interface TweetItem {
   tweet_link: string
@@ -15,17 +16,6 @@ interface UserProfile {
   created_at: string
   tweets: TweetItem[]
   resume_created_at?: string
-}
-
-// Helper function to extract tweet ID from URL
-function extractTweetId(url: string): string | null {
-  try {
-    const regex = /(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/
-    const match = url.match(regex)
-    return match ? match[1] : null
-  } catch {
-    return null
-  }
 }
 
 interface ProfilePageProps {

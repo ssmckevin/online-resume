@@ -3,17 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Tweet, Resume } from '@/app/lib/db'
 import { Tweet as TwitterEmbed } from 'react-tweet'
+import { extractTweetId } from '@/app/lib/utils'
 
 interface ResumeFormProps {
   onResumeUpdated?: () => void
-}
-
-// Helper function to extract tweet ID from URL
-function extractTweetId(url: string): string | null {
-  if (!url) return null
-  const regex = /(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/
-  const match = url.match(regex)
-  return match ? match[1] : null
 }
 
 export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
