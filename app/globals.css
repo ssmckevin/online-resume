@@ -167,6 +167,39 @@ input:focus, textarea:focus, select:focus {
   padding-bottom: 0 !important;
 }
 
+/* Tweet Preview in Form */
+.tweet-preview-container {
+  transform: scale(0.8);
+  transform-origin: center top;
+  margin: -10px 0 -40px 0;
+  filter: sepia(5%) saturate(90%) hue-rotate(10deg);
+  overflow: hidden;
+}
+
+.tweet-preview-container [data-tweet-id] {
+  margin-bottom: 0 !important;
+}
+
+.tweet-preview-container [data-tweet-id] > div:last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.tweet-preview-container [data-tweet-id] > div {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* More aggressive spacing removal for tweet previews */
+.tweet-preview-container * {
+  margin-bottom: 0 !important;
+}
+
+.tweet-preview-container article {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 /* Hide header on profile pages */
 .profile-page ~ * header,
 body:has(.profile-page) header {

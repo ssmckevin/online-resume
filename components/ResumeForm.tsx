@@ -2,9 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import { Tweet, Resume } from '@/app/lib/db'
+import { Tweet as TwitterEmbed } from 'react-tweet'
 
 interface ResumeFormProps {
   onResumeUpdated?: () => void
+}
+
+// Helper function to extract tweet ID from URL
+function extractTweetId(url: string): string | null {
+  if (!url) return null
+  const regex = /(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/
+  const match = url.match(regex)
+  return match ? match[1] : null
 }
 
 export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
@@ -376,6 +385,49 @@ export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
                   }}
                 />
               </div>
+
+              {/* Tweet Preview */}
+              {tweet.tweet_link.trim() && (
+                <div>
+                  <label 
+                    className="block text-sm font-medium mb-3"
+                    style={{ color: 'var(--foreground)' }}
+                  >
+                    Preview
+                  </label>
+                  <div 
+                    className="border rounded-xl p-4 transition-all duration-200"
+                    style={{
+                      borderColor: 'var(--border-gentle)',
+                      background: 'var(--background-secondary)',
+                    }}
+                  >
+                    {(() => {
+                      const tweetId = extractTweetId(tweet.tweet_link)
+                      if (!tweetId) {
+                        return (
+                          <div 
+                            className="text-sm p-3 rounded-lg text-center"
+                            style={{ 
+                              color: '#d97706',
+                              background: '#fef3c7',
+                              border: '1px solid #fde68a'
+                            }}
+                          >
+                            Invalid tweet URL. Please check the link format.
+                          </div>
+                        )
+                      }
+                      
+                      return (
+                        <div className="tweet-preview-container">
+                          <TwitterEmbed id={tweetId} />
+                        </div>
+                      )
+                    })()}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ))}
