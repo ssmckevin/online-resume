@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Tweet, Resume } from '@/app/lib/db'
-import { Tweet as TwitterEmbed } from 'react-tweet'
-import { extractTweetId } from '@/app/lib/utils'
+import TweetCard from '@/components/TweetCard'
 
 interface ResumeFormProps {
   onResumeUpdated?: () => void
@@ -395,29 +394,10 @@ export default function ResumeForm({ onResumeUpdated }: ResumeFormProps) {
                       background: 'var(--background-secondary)',
                     }}
                   >
-                    {(() => {
-                      const tweetId = extractTweetId(tweet.tweet_link)
-                      if (!tweetId) {
-                        return (
-                          <div 
-                            className="text-sm p-3 rounded-lg text-center"
-                            style={{ 
-                              color: '#d97706',
-                              background: '#fef3c7',
-                              border: '1px solid #fde68a'
-                            }}
-                          >
-                            Invalid tweet URL. Please check the link format.
-                          </div>
-                        )
-                      }
-                      
-                      return (
-                        <div className="tweet-preview-container">
-                          <TwitterEmbed id={tweetId} />
-                        </div>
-                      )
-                    })()}
+                    <TweetCard
+                      tweetItem={tweet}
+                      index={index}
+                    />
                   </div>
                 </div>
               )}
