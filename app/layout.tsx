@@ -86,7 +86,7 @@ export default function RootLayout({
               </div>
             </SignedOut>
             <SignedIn>
-              <div style={{ filter: 'sepia(20%) saturate(70%) hue-rotate(15deg)' }}>
+              <div className="user-profile-container no-filter">
                 <UserButton />
               </div>
             </SignedIn>

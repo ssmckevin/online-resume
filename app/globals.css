@@ -205,3 +205,11 @@ h4 { font-size: 1.5rem; }
 .border-soft {
   border-color: var(--border-soft);
 }
+
+/* Ensure no filters apply to user profile */
+.no-filter,
+.no-filter *,
+.user-profile-container,
+.user-profile-container * {
+  filter: none !important;
+}
